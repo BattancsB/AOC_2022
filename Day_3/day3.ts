@@ -59,10 +59,8 @@ function findIntersection(clearedWords: string[]): string {
   var filteredArray: string = clearedWords[0];
   for (var i = 1; i < clearedWords.length; i++) {
     filteredArray = clearWord(filteredArray);
-    //console.log(filteredArray + " test " + clearedWords[i]);
     filteredArray = Array.from(filteredArray).filter(value => clearedWords[i].includes(value)).join("").toString();
   }
-  console.log('shit' + filteredArray[0]);
   return filteredArray[0];
 }
 
