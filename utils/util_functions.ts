@@ -12,13 +12,38 @@ export function readFl(fileName:string, separator: string): string[] {
 }
 
 export function clearWord(word: string): string {
-  var clearWord: string = '';
+  let clearWord: string = '';
   Array.from(word).forEach((x, i) => {
     if (!clearWord.includes(x)) {
       clearWord += (x)
     }
   });
   return clearWord;
+}
+
+export function isItClearArray(charArray: string[]): boolean {
+  let clearArray: string[] = [];
+  let flag = true;
+  charArray.forEach(x => {
+    if (!clearArray.includes(x)) {
+      clearArray.push(x);
+    }else{     
+      flag = false;
+    }
+  });
+  return flag;
+}
+
+export function isItClear(word: string): boolean {
+  let clearWord: string = '';
+  Array.from(word).forEach(x => {
+    if (!clearWord.includes(x)) {
+      clearWord += (x);
+    }else{
+      return false;
+    }
+  });
+  return true;
 }
 
 export function findIntersection(words: string[]): string {
