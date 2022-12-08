@@ -1,79 +1,111 @@
 import { print2DArray, readFl } from "../utils/util_functions";
 
-function read2DArray(lines: string[]) {
+function read2DArray(lines: string[]): number[][] {
   const rowCount = lines.length;
   const columnCount = lines[0].length;
 
   let array: number[][] = new Array<Array<number>>;
 
-  for (let i = 0; i <= rowCount+1; i++) {
+  for (let i = 0; i < rowCount; i++) {
     array[i] = []
-    for (let j = 0; j <= columnCount+1; j++) {
-      if (i == 0 || i == rowCount+1) {
-        array[i][j] = -1;
-      } else {
-        if (j == 0 || j == columnCount+1) {
-          array[i][j] = -1;
-        } else {
-          array[i][j] = Number(lines[i-1].charAt(j-1))
-        }
-      }
+    for (let j = 0; j < columnCount; j++) {
+      //   if (i == 0 || i == rowCount+1) {
+      //     array[i][j] = -1;
+      //   } else {
+      //     if (j == 0 || j == columnCount+1) {
+      //       array[i][j] = -1;
+      //     } else {
+      array[i][j] = Number(lines[i].charAt(j))
+      // }
+      // }
     }
   }
+  print2DArray(array)
+  return array;
+}
 
-  let counter = 0;
+function processArray(array: number[][]): number {
+  const rowCount = array.length;
+  const columnCount = array[0].length;
+  let counter = (rowCount-1) * (columnCount-1);
 
-
-  for (let i = 1; i <= rowCount; i++) {
-    for (let j = 1; j <= columnCount; j++) {
+  for (let i = 1; i < rowCount-1; i++) {
+    for (let j = 1; j < columnCount-1; j++) {
       let flag1: boolean = false;
       let flag2: boolean = false;
       let flag3: boolean = false;
       let flag4: boolean = false;
+      let left: number[] = [];
+      let right: number[] = [];
+      let top: number[] = [];
+      let down: number[] = [];
+
       array[i].slice(0, j).forEach(x => {
-        if(x > array[i][j]){
+        left = array[i].slice(0, j);
+        if (x >= array[i][j]) {
           flag1 = true;
         }
       })
-      array[i].slice(j+1, columnCount+1).forEach(x => {
-        if(x > array[i][j]){
+      array[i].slice(j + 1, columnCount).forEach(x => {
+        right = array[i].slice(j + 1, columnCount + 2)
+        if (x >= array[i][j]) {
           flag2 = true;
         }
       })
-      for(let k = 0; k < i; k++){
-        if(array[k][j] > array[i] [j]){
-          if(i == 3 || j == 3){
-            
-          }
+
+      // for(let a = 0; a < i; a++){
+      //   //left.push(array[i][k1])
+
+      //   if(array[i][a] > array[i] [j]){
+      //     flag1 = true
+      //   }
+      // }
+
+      // for(let b = i+1; 2 <= columnCount + 1 ; b++){
+      //   //right.push(array[i][k2])
+
+      //   if(array[i][b] > array[i] [j]){
+      //     flag2 = true
+      //   }
+      // }
+
+      for (let h1 = 0; h1 < i; h1++) {
+        top.push(array[h1][j])
+        if (array[h1][j] >= array[i][j]) {
           flag3 = true
         }
       }
 
-      for(let h = i + 1; h <= rowCount+1; h++){
-        if(array[h][j] > array[i] [j]){
+      for (let h2 = i + 1; h2 < rowCount; h2++) {
+        down.push(array[h2][j])
+        if (array[h2][j] >= array[i][j]) {
           flag4 = true
         }
       }
 
       if (
-      !(flag1 && flag2 && flag3 && flag4)  
-      ){
-        console.log(array[i] [j])
-        counter ++;
+        !(flag1 && flag2 && flag3 && flag4)
+      ) {
+        console.log(String(array[i][j]) + ' ' + flag1 + ' ' + flag2 + ' ' + flag3 + ' ' + flag4)
+        console.log('elem: ' + array[i][j] + ' bal: ' + left + ' jobb: ' + right + ' top: ' + top + ' down: ' + down)
+        counter++;
       }
     }
   }
-print2DArray(array)
   console.log(counter);
+  return counter;
+  
+  
 }
 
 
 
 
 function part1() {
-  const lines = readFl('input_test.txt', '\r\n')
-  console.log(lines);
-  read2DArray(lines)
+  const lines = readFl('input.txt', '\n')
+  
+  processArray(read2DArray(lines))
+  
 }
 
 part1()
