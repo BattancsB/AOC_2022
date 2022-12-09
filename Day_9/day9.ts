@@ -41,40 +41,27 @@ function processLines(lines: string[]): Set<Position> {
     switch (elements[0]) {
       case 'L':
 
-        positions = processCommand(Direction.LEFT, Number.parseInt(elements[1]), headPosition, tailPosition);
+        positions = processCommand(Direction.LEFT, Number.parseInt(elements[1]), headPosition, tailPosition, posSet);
         headPosition = positions.headPos;
         tailPosition = positions.tailPos;
-
-        newPos = tailPosition;
-
-        posSet.add(tailPosition);
 
         break;
       case 'R':
-        positions = processCommand(Direction.RIGHT, Number.parseInt(elements[1]), headPosition, tailPosition);
+        positions = processCommand(Direction.RIGHT, Number.parseInt(elements[1]), headPosition, tailPosition, posSet);
         headPosition = positions.headPos;
         tailPosition = positions.tailPos;
-
-        newPos = tailPosition;
-        posSet.add(tailPosition);
 
         break;
       case 'U':
-        positions = processCommand(Direction.UP, Number.parseInt(elements[1]), headPosition, tailPosition);
+        positions = processCommand(Direction.UP, Number.parseInt(elements[1]), headPosition, tailPosition, posSet);
         headPosition = positions.headPos;
         tailPosition = positions.tailPos;
-
-        newPos = tailPosition;
-        posSet.add(tailPosition);
 
         break;
       case 'D':
-        positions = processCommand(Direction.DOWN, Number.parseInt(elements[1]), headPosition, tailPosition);
+        positions = processCommand(Direction.DOWN, Number.parseInt(elements[1]), headPosition, tailPosition, posSet);
         headPosition = positions.headPos;
         tailPosition = positions.tailPos;
-
-        newPos = tailPosition;
-        posSet.add(tailPosition);
 
         break;
     }
@@ -82,13 +69,14 @@ function processLines(lines: string[]): Set<Position> {
   return posSet;
 }
 
-function processCommand(direction: Direction, steps: number, headPosition: Position, tailPosition: Position): { headPos: Position, tailPos: Position } {
+function processCommand(direction: Direction, steps: number, headPosition: Position, tailPosition: Position, tailset: Set<Position>): { headPos: Position, tailPos: Position } {
   switch (direction) {
     case Direction.LEFT:
       for (let i = 0; i < steps; i++) {
         headPosition.y--;
         if (headPosition.correctdistance(tailPosition)) {
           tailPosition = moveTail(headPosition, Direction.LEFT)
+          tailset.add(tailPosition);
           process.stdout.write('true')
         }
         console.log('head {' + headPosition.x + ' ' + headPosition.y + '} ');
@@ -99,7 +87,8 @@ function processCommand(direction: Direction, steps: number, headPosition: Posit
       for (let i = 0; i < steps; i++) {
         headPosition.y++;
         if (headPosition.correctdistance(tailPosition)) {
-          tailPosition = moveTail(headPosition, Direction.RIGHT)    
+          tailPosition = moveTail(headPosition, Direction.RIGHT)  
+          tailset.add(tailPosition);  
           process.stdout.write('true')
         }
         console.log('head {' + headPosition.x + ' ' + headPosition.y + '} ');
@@ -111,6 +100,7 @@ function processCommand(direction: Direction, steps: number, headPosition: Posit
         headPosition.x--;
         if (headPosition.correctdistance(tailPosition)) {
           tailPosition = moveTail(headPosition, Direction.UP)
+          tailset.add(tailPosition);
           process.stdout.write('true')
         }
         console.log('head {' + headPosition.x + ' ' + headPosition.y + '} ');
@@ -122,6 +112,7 @@ function processCommand(direction: Direction, steps: number, headPosition: Posit
         headPosition.x++;
         if (headPosition.correctdistance(tailPosition)) {
           tailPosition = moveTail(headPosition, Direction.DOWN)
+          tailset.add(tailPosition);
           process.stdout.write('true')
         }
         console.log('head {' + headPosition.x + ' ' + headPosition.y + '} ');
@@ -158,18 +149,12 @@ function moveTail(headPosition: Position, direction: Direction): Position {
 }
 
 function part1() {
-  const lines = readFl('input_test.txt', '\r\n');
+  const lines = readFl('input.txt', '\n');
   let counter = 0;
-  // let initialState: string[][] = [[]];
-  // initialState[4][0] = 'H'
-  // const initialHeadPosition: { x: number, y: number } = { x: 4, y: 0 }
   processLines(lines).forEach(x => {
-    //console.log(x);
     counter++;
   })
   console.log(counter);
-
-  //console.log(processLines(lines).values.length);
 }
 
 part1()
